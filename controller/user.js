@@ -10,51 +10,58 @@ function isstringisvalid(string){
     }
 }
 
+//
 // Signup Backend
 const signup = async (req, res) => {
-    const { name, email, password } = req.body;
-    console.log('email',email);
-    if (isstringisvalid(name) || isstringisvalid(email) || isstringisvalid(password)) {
-        return res.status(400).json({ error: "Bad Parameters" });
-    }
-
     try {
-        await User.create({ name, email, password });
-        res.status(201).json({ message: 'Successfully created new user' });
+        const { name, email, password } = req.body;
+
+        // Input validation
+        if (!name || !email || !password) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        // Hash the password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Save the user to the database
+        await User.create({ name, email, password: hashedPassword });
+
+        res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
-        console.error('Error during user creation:', err);
-        res.status(500).json({ error: 'Failed to create user', details: err.message });
+        console.error("Signup Error:", err);
+        res.status(500).json({ error: "Failed to register user" });
     }
 };
 
+//
 // Login Backend 
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Validate input
-        if (isstringisvalid(email) || isstringisvalid(password)) {
-            return res.status(400).json({ error: "Email or password is missing" });
+        // Input validation
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
         }
-
-        console.log(password);
 
         // Find user by email
-        const user = await User.findAll({ where: { email } });
-
-        if (user.length>0) {
-            // Compare password
-            if (user[0].password === password) {
-                return res.status(200).json({ success: true, message: "User logged in successfully" });
-            } else {
-                return res.status(401).json({ success: false, message: "Password is incorrect" });
-            }
-        } else {
-            return res.status(404).json({ success: false, message: "User does not exist" });
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
         }
+
+        // Compare the password with hashed password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
+
+        res.status(200).json({ message: "Login successful", user: { name: user.name, email: user.email } });
     } catch (err) {
-        console.error(err); // Log the error for debugging
-        res.status(500).json({ message: err, success: false });
+        console.error("Login Error:", err);
+        res.status(500).json({ error: "Failed to login" });
     }
 };
 

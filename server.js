@@ -9,6 +9,10 @@ const sequelize=require('./util/database');
 const User=require('./models/users');
 
 const userRouter=require('./routes/user');
+//
+const bodyParser = require('body-parser')
+app.use(bodyParser.json());
+
 
 app.use(cors());
 

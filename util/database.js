@@ -10,4 +10,6 @@ const Sequelize=require('sequelize').Sequelize;
 
 
 
+
+
 module.exports=sequelize;
