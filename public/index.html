@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup and Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <!-- Signup Form -->
+            <form id="signup-form" class="form" onsubmit="signup(event)">
+                <h2>Signup</h2>
+                <div id="signup_msg" class="message"></div>
+                <div id="signup_error" class="error"></div>
+                <input type="text" id="signup_name" placeholder="Name" required>
+                <input type="email" id="signup_email" placeholder="Email" required>
+                <input type="password" id="signup_password" placeholder="Password" required>
+                <button type="submit">Signup</button>
+                <p>Already have an account? <a href="#" id="login-link" onclick="switchToLogin()">Login here</a></p>
+            </form>
+
+            <!-- Login Form -->
+            <form id="login-form" class="form hidden" onsubmit="login(event)">
+                <h2>Login</h2>
+                <div id="login_msg" class="message"></div>
+                <div id="login_error" class="error"></div>
+                <input type="email" id="login_email" placeholder="Email" required>
+                <input type="password" id="login_password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a href="#" id="signup-link" onclick="switchToSignup()">Signup here</a></p>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
