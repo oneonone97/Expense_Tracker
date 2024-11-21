@@ -1,5 +1,5 @@
 const { where } = require('sequelize');
-const User = require('../models/users');
+const User = require('../models/users.js');
 const bcrypt = require('bcrypt');
 
 function isstringisvalid(string){

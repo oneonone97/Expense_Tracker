@@ -27,7 +27,7 @@ async function signup(e) {
             return;
         }
 
-        const response = await axios.post('http://localhost:3000/user/signup', signupDetails);
+        const response = await axios.post('http://localhost:3001/user/signup', signupDetails);
 
         if (response.status === 201) {
             document.getElementById('signup_msg').innerHTML = `<p>${response.data.message}</p>`;
@@ -57,12 +57,14 @@ async function login(e) {
             return;
         }
 
-        const response = await axios.post('http://localhost:3000/user/login', loginDetails);
+        const response = await axios.post('http://localhost:3001/user/login', loginDetails);
 
-        if (response.status === 200) {
+        // if (response.status === 200) {
             document.getElementById('login_msg').innerHTML = `<p>Login successful!</p>`;
             // Redirect or perform any action
-        }
+            window.location.href = '../public/dashboard/home.html';
+        // }
+        console.log(response);
     } catch (err) {
         const errorMessage = err.response?.data?.error || err.message || 'An error occurred.';
         document.getElementById('login_error').innerHTML = `<p>${errorMessage}</p>`;
