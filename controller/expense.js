@@ -96,6 +96,7 @@ const addExpense = async (req, res) => {
             amount: expenseRequest.amount,
             description: expenseRequest.description,
             category: expenseRequest.type,
+            userId: req.user.id,
             date: expenseRequest.date || new Date() // Use the provided date or default to the current timestamp
         };
 
@@ -114,16 +115,38 @@ const addExpense = async (req, res) => {
 };
 
 
+// const getExpenses = async (req, res) => {
+//     Expense.findAll()
+//         .then(expenses => {
+//             return res.status(200).json({ expenses, success: true });
+//         })
+//         .catch(err => {
+//             console.error("Error fetching expenses:", err);
+//             return res.status(500).json({ error: "Failed to fetch expenses", success: false });
+//         });
+// };
+
 const getExpenses = async (req, res) => {
-    Expense.findAll()
-        .then(expenses => {
-            return res.status(200).json({ expenses, success: true });
-        })
-        .catch(err => {
-            console.error("Error fetching expenses:", err);
-            return res.status(500).json({ error: "Failed to fetch expenses", success: false });
+    try {
+        const expenses = await Expense.findAll({
+            attributes: ['id', 'amount', 'description', 'category'], // Ensure the correct fields are selected
         });
+
+        // Map category to type (if needed)
+        const formattedExpenses = expenses.map(expense => ({
+            id: expense.id,
+            amount: expense.amount,
+            description: expense.description,
+            type: expense.category, // Map category to type
+        }));
+
+        return res.status(200).json({ expenses: formattedExpenses, success: true });
+    } catch (err) {
+        console.error("Error fetching expenses:", err);
+        return res.status(500).json({ error: "Failed to fetch expenses", success: false });
+    }
 };
+
 
 
 // const getExpenses = async (req, res) => {
@@ -175,18 +198,25 @@ const deleteExpense = async (req, res) => {
 
         console.log("Delete request for expense ID:", id);
 
-        const result = await Expense.destroy({ where: { id: id } });
+        // Delete expense for the logged-in user
+        const result = await Expense.destroy({ where: { id: id, userId: req.user.id } });
 
         if (result === 0) {
-            return res.status(404).json({ success: false, message: "Expense not found" });
+            // No rows affected means expense does not belong to user or does not exist
+            return res.status(404).json({ success: false, message: "Expense not found or does not belong to user" });
         }
 
+        // Successful deletion
         return res.status(200).json({ success: true, message: "Deleted Successfully" });
+
     } catch (err) {
         console.error("Error deleting expense:", err);
         return res.status(500).json({ success: false, message: "Failed to delete expense" });
     }
 };
+
+
+
 
 
 module.exports = { deleteExpense, addExpense, getExpenses };

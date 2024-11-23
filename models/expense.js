@@ -24,7 +24,11 @@ const Expense = sequelize.define('Expense', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW // Automatically set the current timestamp if not provided
-    }
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false, // Ensure this matches your database schema
+    },
 });
 
 module.exports = Expense;
