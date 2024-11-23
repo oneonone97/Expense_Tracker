@@ -12,15 +12,12 @@ const path = require('path');
 
 const userRouter=require('./routes/user');
 
-const authenticate = require('./middleware/authenticate');
-
 //
 
 const expenseRoutes = require('./routes/expense');
 const bodyParser = require('body-parser')
 const axios = require('axios');
 const helmet = require('helmet');
-const Expense = require('./models/expense');
 
 app.use(helmet({
     contentSecurityPolicy: {
@@ -38,15 +35,11 @@ app.use(cors());
 
 app.use(express.json());
 
-
-
 app.use('/user',userRouter);
 
 app.use('/expense', expenseRoutes);
 
-// One to Many Relationship
-User.hasMany(Expense);
-Expense.belongsTo(User);
+
 
 sequelize
     .sync()
@@ -54,4 +47,4 @@ sequelize
     .then(result=>{
         app.listen(3001);
     })
-    .catch(err=>console.log(err)); 
+    .catch(err=>console.log(err));

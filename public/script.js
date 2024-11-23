@@ -61,8 +61,6 @@ async function login(e) {
 
         // if (response.status === 200) {
             document.getElementById('login_msg').innerHTML = `<p>Login successful!</p>`;
-            console.log(response.data);
-            localStorage.setItem('token', response.data.token)
             // Redirect or perform any action
             window.location.href = '../public/dashboard/home.html';
         // }

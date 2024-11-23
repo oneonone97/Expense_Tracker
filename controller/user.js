@@ -1,8 +1,6 @@
 const { where } = require('sequelize');
 const User = require('../models/users.js');
 const bcrypt = require('bcrypt');
-// JWT
-const jwt = require('jsonwebtoken');
 
 function isstringisvalid(string){
     if(string == undefined || string.length === 0){
@@ -37,18 +35,6 @@ const signup = async (req, res) => {
     }
 };
 
-
-
-function generateAccessToken(userId, name) {
-    if (!userId || !name) {
-        throw new Error('userId and name must be provided to generate a token');
-    }
-
-    return jwt.sign(
-        { id: userId, name }, 'secretkey'
-    );
-}
-
 //
 // Login Backend 
 const login = async (req, res) => {
@@ -71,16 +57,8 @@ const login = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-// access token
-const userId = user.id; // Ensure this field exists in the user model
-const name = user.name; // Optional: other fields to include in the payload
-const token = generateAccessToken(userId, name);
 
-    res.status(200).json({
-    message: 'Login successful',
-    token,
-    user: { name: user.name, email: user.email },
-    });
+        res.status(200).json({ message: "Login successful", user: { name: user.name, email: user.email } });
     } catch (err) {
         console.error("Login Error:", err);
         res.status(500).json({ error: "Failed to login" });
@@ -89,8 +67,3 @@ const token = generateAccessToken(userId, name);
 
 
 module.exports = { signup, login };
-
-//Rohan 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-// Sohan
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsIm5hbWUiOiJTb2hhbiIsImlhdCI6MTczMjM2MzU4OSwiZXhwIjoxNzMyMzY3MTg5fQ.Y7DxLWquzAZM3TGMZDyQwYKqMXtAT-aitYWwq8WydJM
