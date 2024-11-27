@@ -9,7 +9,10 @@ const Sequelize=require('sequelize').Sequelize;
 // });
 
 
-
+const sequelize = new Sequelize('expense_tracker', 'root', '9695482755Roh@n', {
+  host: 'localhost', // The database host
+  dialect: 'mysql',  // Use the appropriate dialect (e.g., mysql, postgres)
+});
 
 
 
