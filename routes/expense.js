@@ -9,6 +9,7 @@ const userAuthentication=require('../middleware/authenticate');
 
 router.get('/get-expenses',userAuthentication.authenticate, expenseController.getExpenses);
 
+
 router.post('/add-Expense',userAuthentication.authenticate, expenseController.addExpense);
 
 router.delete('/delete-expense/:id',userAuthentication.authenticate ,expenseController.deleteExpense);

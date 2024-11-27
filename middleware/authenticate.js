@@ -1,47 +1,41 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/users.js');
 
-// const authenticate = (req, res, next) => {
 
-//     try {
-//         const token = req.header('Authorization');
-//         console.log(token);
-//         const user = jwt.verify(token, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
-//         console.log('userID >>>> ', user.userId)
-//         User.findByPk(user.userId).then(user => {
+const authenticate = async (req, res, next) => {
+    try {
+        // Get the token from the Authorization header
+        const token = req.headers['authorization'];
 
-//             req.user = user; ///ver
-//             next();
-//         })
+        // Check if the token is present and correctly formatted
+        if (!token || !token.startsWith('Bearer ')) {
+            return res.status(401).json({ success: false, message: 'Authorization token missing or malformed.' });
+        }
 
-//       } catch(err) {
-//         console.log(err);
-//         return res.status(401).json({success: false})
-//         // err
-//       }
+        // Extract the token part from 'Bearer <token>'
+        const actualToken = token.split(' ')[1]; 
 
-// }
+        // Verify the token
+        const decodedToken = jwt.verify(actualToken, 'secret'); // Ensure secret matches the signing key
 
-const authenticate = (req, res, next) => {
-  const authHeader = req.header('Authorization'); // Retrieve Authorization header
-  if (!authHeader) {
-      return res.status(401).json({ message: 'Authorization token missing' });
-  }
+        console.log('User ID from token >>>> ', decodedToken.id); // Ensure this matches your token payload structure
 
-  const token = authHeader.split(' ')[1]; // Extract token after "Bearer"
-  if (!token) {
-      return res.status(401).json({ message: 'JWT must be provided' });
-  }
+        // Fetch the user from the database using the ID from the token
+        const user = await User.findByPk(decodedToken.id); // Use await for better error handling
 
-  try {
-        const decoded = jwt.verify(token, 'secretkey');
-        console.log('Decoded Token:', decoded); // Debug decoded payload
-        next(); // Pass control to the next middleware or route handler
-  } catch (err) {
-      console.error('JWT verification failed:', err);
-      res.status(401).json({ message: 'Invalid token' });
-  }
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found.' });
+        }
+
+        req.user = user; // Attach the user object to the request
+        next(); // Proceed to the next middleware function or route handler
+    } catch (err) {
+        console.error('Authentication error:', err);
+        return res.status(401).json({ success: false, message: 'Unauthorized.' });
+    }
 };
+
 
 
 module.exports = {

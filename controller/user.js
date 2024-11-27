@@ -45,7 +45,8 @@ function generateAccessToken(userId, name) {
     }
 
     return jwt.sign(
-        { id: userId, name }, 'secretkey'
+        { id: userId, userName: name }, 
+        'secret'
     );
 }
 
@@ -90,7 +91,7 @@ const token = generateAccessToken(userId, name);
 
 module.exports = { signup, login };
 
-//Rohan 
+
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 // Sohan
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsIm5hbWUiOiJTb2hhbiIsImlhdCI6MTczMjM2MzU4OSwiZXhwIjoxNzMyMzY3MTg5fQ.Y7DxLWquzAZM3TGMZDyQwYKqMXtAT-aitYWwq8WydJM
