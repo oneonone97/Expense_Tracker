@@ -2,44 +2,6 @@ const { where } = require('sequelize');
 const {sequelize} = require('../util/database.js')
 const Expense = require('../models/expense.js');
 
-
-// const addExpense = async (req, res) => {
-//     try {
-//       console.log("Request received:", req.body);
-  
-//       const expenseRequest = req.body;
-  
-//       // Use the authenticated user's ID
-//       if (!req.user || !req.user.id) {
-//         return res.status(401).json({ success: false, message: "Unauthorized" });
-//       }
-  
-//       const requiredRequest = {
-//         amount: expenseRequest.amount,
-//         description: expenseRequest.description,
-//         category: expenseRequest.type,
-//         userId: req.user.id, // Use req.user.id from the middleware
-//         date: expenseRequest.date || new Date(), // Default to current timestamp if no date is provided
-//       };
-
-//       const userId = req.user.id;
-  
-//       console.log("Request Data: ", requiredRequest, userId);
-  
-//       if (!requiredRequest.amount || !requiredRequest.description || !requiredRequest.category) {
-//         return res.status(400).json({ success: false, message: "Parameters missing" });
-//       }
-  
-//       const expense = await Expense.create({requiredRequest, userId: req.user.id});
-  
-//       return res.status(201).json({ expense, success: true });
-//     } catch (err) {
-//       console.error("Add Expense Error:", err);
-//       res.status(500).json({ error: "Failed to add expense" });
-//     }
-//   };
-  
-
 // New Code
 
 const addExpense = async (req, res) => {

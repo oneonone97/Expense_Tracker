@@ -1,8 +1,10 @@
+require('dotenv').config();
 const { where } = require('sequelize');
 const User = require('../models/users.js');
 const bcrypt = require('bcrypt');
 // JWT
 const jwt = require('jsonwebtoken');
+
 
 function isstringisvalid(string){
     if(string == undefined || string.length === 0){
@@ -44,9 +46,17 @@ function generateAccessToken(userId, name) {
         throw new Error('userId and name must be provided to generate a token');
     }
 
+   const secret = process.env.TOKEN_SECRET;
+
+   console.log("TOKEN_SECRET:", secret);
+
+   if(!secret){
+    throw new Error('Token secret not define in enviroment variables')
+   }
+
     return jwt.sign(
         { id: userId, userName: name }, 
-        'secret'
+        secret,
     );
 }
 

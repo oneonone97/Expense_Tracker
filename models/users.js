@@ -32,7 +32,14 @@ const User = sequelize.define('user', {
         allowNull: false,
         defaultValue: Sequelize.NOW,
     },
-}, { tableName: 'users' });
+    isPremiumuser: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false, // Default value
+    },
+}, { tableName: 'users',timestamps: true, }
+
+);
 
 
 module.exports=User;

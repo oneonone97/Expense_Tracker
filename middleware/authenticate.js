@@ -1,5 +1,7 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../models/users.js');
+
 
 
 const authenticate = async (req, res, next) => {
@@ -8,7 +10,7 @@ const authenticate = async (req, res, next) => {
         const token = req.headers['authorization'];
 
         // Check if the token is present and correctly formatted
-        if (!token || !token.startsWith('Bearer ')) {
+        if (!token) {
             return res.status(401).json({ success: false, message: 'Authorization token missing or malformed.' });
         }
 
@@ -16,7 +18,7 @@ const authenticate = async (req, res, next) => {
         const actualToken = token.split(' ')[1]; 
 
         // Verify the token
-        const decodedToken = jwt.verify(actualToken, 'secret'); // Ensure secret matches the signing key
+        const decodedToken = jwt.verify(actualToken, process.env.TOKEN_SECRET); // Ensure secret matches the signing key
 
         console.log('User ID from token >>>> ', decodedToken.id); // Ensure this matches your token payload structure
 

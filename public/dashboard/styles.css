@@ -31,6 +31,21 @@ form {
     margin-bottom: 20px;
 }
 
+#rzp-button {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#rzp-button:hover{
+    background-color: #45a049;
+}
+
 input, select, button {
     padding: 10px;
     font-size: 16px;
@@ -46,7 +61,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #45a049;
 }
 
 /* Message Styling */

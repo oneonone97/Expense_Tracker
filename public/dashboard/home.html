@@ -22,13 +22,16 @@
                 <option value="Other">Other</option>
             </select>
             <button type="submit">Add Expense</button>
-        </form>        
+            <button id="rzp-button">Buy Premium</button>
+        </form>   
+        <div id="message"></div>
+        <script src="https://checkout.razorpay.com/v1/razorpay.js"></script>  
         <div id="message" class="message"></div>
         <h2>Expenses</h2>
         <ul id="listOfExpenses"></ul>
 
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js" integrity="sha512-DdX/YwF5e41Ok+AI81HI8f5/5UsoxCVT9GKYZRIzpLxb8Twz4ZwPPX+jQMwMhNQ9b5+zDEefc+dcvQoPWGNZ3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.8/axios.min.js" integrity="sha512-v8+bPcpk4Sj7CKB11+gK/FnsbgQ15jTwZamnBf/xDmiQDcgOIYufBo6Acu1y30vrk8gg5su4x0CG3zfPaq5Fcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="main.js"></script>
 </body>
 </html>
